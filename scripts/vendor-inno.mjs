@@ -2,7 +2,7 @@
 // SHA-256-verified installer and installs it silently into a temp dir; with --from, copies
 // from an existing installation instead.
 //
-// Usage: npm run vendor:inno [-- --from "C:\Program Files (x86)\Inno Setup 6"]
+// Usage: npm run vendor:inno [-- --from "C:\Program Files\Inno Setup 7"]
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -11,9 +11,9 @@ import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
 import os from "node:os";
 
-const VERSION = "6.7.4";
-const SHA256 = "a549929319f9120716677c685535ca4671e4b937b5fdc87e2585f32d8eb30e8c";
-const URL = `https://github.com/jrsoftware/issrc/releases/download/is-6_7_4/innosetup-${VERSION}.exe`;
+const VERSION = "7.1.1";
+const SHA256 = "8a5a6711c3766a6e5fb74f280ba0e3551e719ce94538d901fdbd1f8f9920b3f0";
+const URL = `https://github.com/jrsoftware/issrc/releases/download/is-7_1_1/innosetup-${VERSION}-x64.exe`;
 
 const args = process.argv.slice(2);
 const fromIndex = args.indexOf("--from");

@@ -14,7 +14,7 @@ npm run build        # tsc -> dist/ (ESM, "type": "module")
 npm test             # build + node --test "test/*.test.mjs"
 node --test --test-name-pattern="entry inference" test/unit.test.mjs   # single test (run npm run build first)
 npm run vendor:node       # download + SHA-256 verify Node into vendor/
-npm run vendor:inno -- --from "C:\Program Files (x86)\Inno Setup 6"
+npm run vendor:inno -- --from "C:\Program Files\Inno Setup 7"
 npm run vendor:launcher   # compile launcher/launcher.c (MinGW gcc or MSVC)
 ```
 

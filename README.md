@@ -77,7 +77,7 @@ Unsigned installers may trigger Windows SmartScreen; code signing is not automat
 npm install
 npm test                                  # build + unit tests
 npm run vendor:node                       # download + SHA-256 verify Node.js 26.13.0
-npm run vendor:inno -- --from "C:\Program Files (x86)\Inno Setup 6"
+npm run vendor:inno -- --from "C:\Program Files\Inno Setup 7"
 npm run vendor:launcher                   # compile launcher/launcher.c (MinGW gcc or MSVC)
 ```
 
