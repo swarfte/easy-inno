@@ -32,7 +32,9 @@
     "test": "npm run build && node --test \"test/*.test.mjs\"",
     "vendor:node": "node scripts/vendor-node.mjs",
     "vendor:inno": "node scripts/vendor-inno.mjs",
-    "vendor:launcher": "node scripts/build-launcher.mjs"
+    "vendor:launcher": "node scripts/build-launcher.mjs",
+    "vendor:all": "node scripts/vendor-all.mjs",
+    "prepack": "node scripts/vendor-all.mjs --check-or-build"
   },
   "keywords": [
     "windows",

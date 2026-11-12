@@ -7,3 +7,4 @@ release/
 vendor/node/
 vendor/launcher/*.exe
 vendor/inno-setup/
+vendor/launcher/*.obj

@@ -1,17 +1,42 @@
-// Copies the Inno Setup compiler files from an existing Inno Setup installation into
-// vendor/inno-setup. Maintainers pin one exact Inno Setup version per easy-inno release.
+// Vendors the Inno Setup compiler into vendor/inno-setup. By default downloads the pinned,
+// SHA-256-verified installer and installs it silently into a temp dir; with --from, copies
+// from an existing installation instead.
 //
-// Usage: npm run vendor:inno -- --from "C:\Program Files (x86)\Inno Setup 6"
+// Usage: npm run vendor:inno [-- --from "C:\Program Files (x86)\Inno Setup 6"]
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { createHash } from "node:crypto";
+import { spawnSync } from "node:child_process";
+import os from "node:os";
+
+const VERSION = "6.7.4";
+const SHA256 = "a549929319f9120716677c685535ca4671e4b937b5fdc87e2585f32d8eb30e8c";
+const URL = `https://github.com/jrsoftware/issrc/releases/download/is-6_7_4/innosetup-${VERSION}.exe`;
+
 const args = process.argv.slice(2);
 const fromIndex = args.indexOf("--from");
-const from = fromIndex >= 0 ? args[fromIndex + 1] : undefined;
+let from = fromIndex >= 0 ? args[fromIndex + 1] : undefined;
+
+// Without --from, download the pinned installer and install it silently (per-user, no admin)
+// into a temporary directory, then copy the compiler files out of it.
+let tempWork;
 if (!from) {
-  console.error('Usage: node scripts/vendor-inno.mjs --from "<Inno Setup install dir>"');
-  process.exit(1);
+  tempWork = fs.mkdtempSync(path.join(os.tmpdir(), "easy-inno-inno-"));
+  const exe = path.join(tempWork, "innosetup.exe");
+  console.log(`Downloading ${URL}`);
+  const response = await fetch(URL);
+  if (!response.ok) throw new Error(`Download failed: HTTP ${response.status}`);
+  fs.writeFileSync(exe, Buffer.from(await response.arrayBuffer()));
+  const actual = createHash("sha256").update(fs.readFileSync(exe)).digest("hex");
+  if (actual !== SHA256) throw new Error(`SHA-256 mismatch for Inno Setup
+  expected ${SHA256}
+  actual   ${actual}`);
+  console.log("SHA-256 verified");
+  from = path.join(tempWork, "install");
+  const r = spawnSync(exe, ["/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART", "/CURRENTUSER", "/NOICONS", "/SP-", `/DIR=${from}`], { stdio: "inherit" });
+  if (r.status !== 0) throw new Error("Inno Setup silent install failed");
 }
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -39,3 +64,5 @@ if (!fs.existsSync(path.join(target, "LICENSE.txt"))) {
   console.warn("WARNING: no license file found; copy Inno Setup's license to vendor/inno-setup/LICENSE.txt");
 }
 console.log(`Inno Setup files copied to ${target}`);
+
+if (tempWork) fs.rmSync(tempWork, { recursive: true, force: true });
