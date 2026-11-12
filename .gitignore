@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.easy-inno/
+release/
+*.log
+# vendored binaries are produced by `npm run vendor:*`
+vendor/node/
+vendor/launcher/*.exe
+vendor/inno-setup/

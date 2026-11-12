@@ -1,0 +1,59 @@
+{
+  "name": "easy-inno",
+  "version": "0.1.0",
+  "description": "Zero-setup Windows installer builder for Node.js applications",
+  "type": "module",
+  "license": "Apache-2.0",
+  "bin": {
+    "easy-inno": "./bin/easy-inno.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "bin",
+    "dist",
+    "templates",
+    "vendor",
+    "README.md",
+    "LICENSE",
+    "THIRD_PARTY_NOTICES.md"
+  ],
+  "os": [
+    "win32"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "npm run build && node --test \"test/*.test.mjs\"",
+    "vendor:node": "node scripts/vendor-node.mjs",
+    "vendor:inno": "node scripts/vendor-inno.mjs",
+    "vendor:launcher": "node scripts/build-launcher.mjs"
+  },
+  "keywords": [
+    "windows",
+    "installer",
+    "inno-setup",
+    "nodejs",
+    "packaging",
+    "setup"
+  ],
+  "dependencies": {
+    "@inquirer/prompts": "^8.8.0",
+    "commander": "^15.1.0",
+    "fast-glob": "^3.3.3",
+    "handlebars": "^4.7.10",
+    "jsonc-parser": "^3.3.1",
+    "ora": "^10.0.0",
+    "picocolors": "^1.1.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "typescript": "^7.0.2"
+  }
+}
